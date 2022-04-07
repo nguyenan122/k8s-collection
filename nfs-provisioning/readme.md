@@ -1,0 +1,69 @@
+**Mô hình:**
+
+[NFS-server]---[Master]----[Worker]----[Worker]
+
+**B1: Cài Nfs server:**
+```
+yum install nfs-utils nfs-utils-lib -y
+chkconfig rpcbind on
+chkconfig nfs on 
+service rpcbind restart
+service nfs restart
+mkdir -p /data/nfs-k8s/ ; vim /etc/exports
+/data/nfs-k8s/ 192.168.88.0/24(rw,sync,subtree_check,no_root_squash)
+exportfs -a
+showmount -e 192.168.88.88
+```
+
+**B2: Cài nfs client trên mỗi worker node, nếu không sẽ lỗi không mout đc vào pod.**
+```
+yum install nfs-utils nfs-utils-lib -y
+chkconfig nfs off
+chkconfig rpcbind off
+```
+
+**B3: Helm install**
+```
+helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
+helm pull nfs-subdir-external-provisioner/nfs-subdir-external-provisioner
+helm template nfs-subdir-external-provisioner . --set nfs.server=192.168.88.88 \
+  --set nfs.path=/data/nfs-k8s/ \
+  --set storageClass.name=nfs-provisioner \
+  --set storageClass.onDelete=retain \
+  --set storageClass.accessModes=ReadWriteMany
+```
+
+**B4: Tạo PVC và Pod theo Storage đã thêm**
+```
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sc-nfs-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: nfs-provisioner
+  resources:
+    requests:
+      storage: 2Gi
+```
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox
+spec:
+  volumes:
+  - name: myvol
+    persistentVolumeClaim:
+      claimName: sc-nfs-pvc
+  containers:
+  - image: busybox
+    name: busybox
+    command: ["/bin/sh"]
+    args: ["-c", "sleep 600000"]
+    volumeMounts:
+    - name: myvol
+      mountPath: /data
+```
