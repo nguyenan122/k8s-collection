@@ -1,8 +1,8 @@
-**Bước 1** Chỉ định hosts trên các worker_node và master_node: 
+**Bước 1: Chỉ định hosts trên các worker_node và master_node:**  
 ```
 echo 192.168.88.12 registry.tuanda.vn >> /etc/hosts
 ```
-**Bước 2:** Import basic-auth và ssl vào configmap
+**Bước 2: Import basic-auth và ssl vào configmap** 
 ```
 # mkdir /opt/certs /opt/registry
 # cd /opt
@@ -18,7 +18,7 @@ echo 192.168.88.12 registry.tuanda.vn >> /etc/hosts
 # kubectl get configmaps 
 ```
 
-**Bước 3:** Tạo deployment và service NodePort
+**Bước 3: Tạo deployment và service NodePort** 
 ```
 apiVersion: apps/v1
 kind: Deployment
@@ -89,18 +89,18 @@ spec:
     app: private-repository-k8s
   type: NodePort
 ```
-**Bước 4:** Trust CA
+**Bước 4: Trust CA** 
 ```
 sudo cp -rp /opt/certs/ca.crt  /etc/pki/ca-trust/source/anchors/
 sudo update-ca-trust
 sudo service docker restart
 ```
-**Bước 5:** Đẩy cert vào tất cả các node docker, để permit self-certificate gọi pull. (all node)
+**Bước 5: Đẩy cert vào tất cả các node docker, để permit self-certificate gọi pull. (all node)** 
 ```
 mkdir -p /etc/docker/certs.d/registry.tuanda.vn:31320
 cp -rp /opt/certs/ca.crt /etc/docker/certs.d/registry.tuanda.vn\:31320/
 ```
-**Bước 6:** docker login đẩy config registry client sang các node:
+**Bước 6: docker login đẩy config registry client sang các node:** 
 ```
 # curl -v --user tuanda:123 https://registry.tuanda.vn:31320/v2/
 # docker login registry.tuanda.vn:31320 -u tuanda -p 123
@@ -115,7 +115,7 @@ cat ~/.docker/config.json
 mkdir -p /home/tuanda/.docker ;  chown -R tuanda.tuanda /home/tuanda/.docker
 Ta copy file config.json ở trên sang các worker node trong cluster. (/home/tuanda/.docker/config.json)
 ```
-**Bước 7:** đẩy image lên registry:
+**Bước 7: đẩy image lên registry:** 
 ```
 # docker pull nginx:alpine
 # docker tag nginx:alpine registry.tuanda.vn:31320/nginx:alpine
