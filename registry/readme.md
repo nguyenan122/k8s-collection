@@ -1,4 +1,4 @@
-** Bước 1.** Chỉ định hosts trên các worker_node và master_node: 
+**Bước 1** Chỉ định hosts trên các worker_node và master_node: 
 ```
 echo 192.168.88.12 registry.tuanda.vn >> /etc/hosts
 ```
@@ -115,7 +115,7 @@ cat ~/.docker/config.json
 mkdir -p /home/tuanda/.docker ;  chown -R tuanda.tuanda /home/tuanda/.docker
 Ta copy file config.json ở trên sang các worker node trong cluster. (/home/tuanda/.docker/config.json)
 ```
-**Bước 7: ** đẩy image lên registry:
+**Bước 7:** đẩy image lên registry:
 ```
 # docker pull nginx:alpine
 # docker tag nginx:alpine registry.tuanda.vn:31320/nginx:alpine
