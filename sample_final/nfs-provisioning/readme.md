@@ -67,3 +67,7 @@ spec:
     - name: myvol
       mountPath: /data
 ```
+
+Nguồn:
+https://fabianlee.org/2022/01/12/kubernetes-nfs-mount-using-dynamic-volume-and-storage-class/?msclkid=a5ca54e2ae7111eca259ced5d2223a6f
+https://artifacthub.io/packages/helm/nfs-subdir-external-provisioner/nfs-subdir-external-provisioner 
