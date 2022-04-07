@@ -121,3 +121,33 @@ Ta copy file config.json ở trên sang các worker node trong cluster. (/home/t
 # docker tag nginx:alpine registry.tuanda.vn:31320/nginx:alpine
 # docker push registry.tuanda.vn:31320/nginx:alpine
 ```
+
+**Bước 8: Launch pod với option registry**
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-kubernetes
+  namespace: tuanda
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-kubernetes
+  template:
+    metadata:
+      labels:
+        app: hello-kubernetes
+    spec:
+      containers:
+      - name: hello-kubernetes-debug
+        image: admin.tuan.name.vn:31320/debug-tools:1.0.0
+        ports:
+        - containerPort: 8080
+      - name: hello-kubernetes-nginx
+        image: admin.tuan.name.vn:31320/nginx:alpine
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+      - name: regcred
+```
