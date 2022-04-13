@@ -9,7 +9,7 @@ B2. Fix lỗi
 # kubectl top pods
 Error from server (ServiceUnavailable): the server is currently unable to handle the request (get pods.metrics.k8s.io)
 ```
-Ta sửa bằng
+Với Master-node ta chỉ cần sửa như sau
 ```
     spec:
       containers:
@@ -19,4 +19,14 @@ Ta sửa bằng
         - --kubelet-insecure-tls=true          #THÊM CÁI NÀY
         - --kubelet-preferred-address-types=InternalIP
 ```
-
+Với worker-node ta cần sửa thêm:
+```
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp-dir
+      hostNetwork: true                        #THÊM CÁI NÀY
+      nodeSelector:
+        kubernetes.io/os: linux
+      priorityClassName: system-cluster-critical
+      serviceAccountName: metrics-server
+```
