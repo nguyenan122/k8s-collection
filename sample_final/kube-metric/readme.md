@@ -1,6 +1,6 @@
 B1. Tải file về apply
 ```
-curl https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml -o kube-metric.yaml
+wget https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 ```
 
 B2. Fix lỗi
