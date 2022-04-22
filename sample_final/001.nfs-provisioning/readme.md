@@ -15,12 +15,13 @@ exportfs -a
 showmount -e 192.168.88.88
 ```
 
-**B2: Cài nfs client trên mỗi worker node, nếu không sẽ lỗi không mout đc vào pod.**
+**B2: Cài nfs client trên tất cả worker node, nếu không sẽ lỗi không mout đc vào pod.**
 ```
 yum install nfs-utils nfs-utils-lib -y
 chkconfig nfs off
 chkconfig rpcbind off
 ```
+> Ta có thể cài theo ansible đã có sẵn cũng đc. Chỉ cần sửa lại inventory_host.yml là xogn.
 
 **B3: Helm install**
 ```

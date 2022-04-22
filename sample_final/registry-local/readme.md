@@ -5,17 +5,18 @@ echo 192.168.88.12 registry.tuanda.vn >> /etc/hosts
 **Bước 2: Import basic-auth và ssl vào configmap** 
 ```
 # mkdir /opt/certs /opt/registry
-# cd /opt
+# cd /opt/certs
 # openssl req -x509 -out ca.crt -keyout ca.key -days 1825 \
   -newkey rsa:2048 -nodes -sha256 \
   -subj '/CN=registry.tuanda.vn' -extensions EXT -config <( \
    printf "[dn]\nCN=registry.tuanda.vn\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:registry.tuanda.vn\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
 
 # cd /opt/certs/
-# kubectl create configmap registry-cert --from-file=ca.crt --from-file=ca.key
+# kubectl create namespace registry
+# kubectl -n registry create configmap registry-cert --from-file=ca.crt --from-file=ca.key
 # yum install httpd-tools -y ; htpasswd -Bbn tuanda 123 > htpasswd
-# kubectl create configmap registry-basic-auth --from-file=htpasswd
-# kubectl get configmaps 
+# kubectl -n registry create configmap registry-basic-auth --from-file=htpasswd
+# kubectl -n registry get configmaps 
 ```
 
 **Bước 3: Tạo deployment và service NodePort** 
@@ -26,6 +27,7 @@ metadata:
   name: private-repository-k8s
   labels:
     app: private-repository-k8s
+  namespace: registry    
 spec:
   replicas: 1
   selector:
@@ -79,6 +81,7 @@ metadata:
   labels:
     app: private-repository-k8s
   name: private-repository-k8s
+  namespace: registry  
 spec:
   ports:
   - port: 5000
@@ -89,7 +92,7 @@ spec:
     app: private-repository-k8s
   type: NodePort
 ```
-**Bước 4: Trust CA** 
+**Bước 4: Add Trust CA Self certificate trên tất cả các node (all node)** 
 ```
 sudo cp -rp /opt/certs/ca.crt  /etc/pki/ca-trust/source/anchors/
 sudo update-ca-trust
@@ -100,7 +103,7 @@ sudo service docker restart
 mkdir -p /etc/docker/certs.d/registry.tuanda.vn:31320
 cp -rp /opt/certs/ca.crt /etc/docker/certs.d/registry.tuanda.vn\:31320/
 ```
-**Bước 6: docker login đẩy config registry client sang các node:** 
+**Bước 6: docker login đẩy config registry client sang các node: (all node)** 
 ```
 # curl -v --user tuanda:123 https://registry.tuanda.vn:31320/v2/
 # docker login registry.tuanda.vn:31320 -u tuanda -p 123

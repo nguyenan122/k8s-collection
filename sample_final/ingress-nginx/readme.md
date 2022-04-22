@@ -8,6 +8,9 @@ kubectl apply -f deploy.yaml
 kubectl create deployment demo --image=httpd --port=80
 kubectl expose deployment demo
 kubectl create ingress demo-localhost --class=nginx --rule=demo.localdev.me/*=demo:80
+--- Hoặc dùng Helm
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm install ingress-nginx bitnami/nginx-ingress-controller --namespace=ingress-nginx
 ```
 Kiểm tra ingress đã được tạo
 ```

@@ -1,0 +1,19 @@
+---
+- name: Copy variable ip nfs server
+  set_fact:
+    nfs_server_ip: "{{ hostvars['pc1']['ansible_ssh_host'] }}"
+
+- name: Create folder mounted
+  file:
+    path: '{{ folder_mounted }}'
+    state: directory
+    mode: '{{ folder_mounted_permission }}'
+    owner: root
+    group: root
+
+- name: Mount NFS
+  mount:
+    src: '{{ nfs_server_ip }}:{{ folder_sharing }}'
+    path: '{{ folder_mounted }}'
+    fstype: nfs
+    state: mounted

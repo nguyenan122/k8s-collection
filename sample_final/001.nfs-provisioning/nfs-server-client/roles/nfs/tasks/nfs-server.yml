@@ -1,0 +1,29 @@
+---
+- name: Create folder Sharing
+  file:
+    path: '{{ folder_sharing }}'
+    state: directory
+    mode: '{{ folder_sharing_permission }}'
+    owner: root
+    group: root
+
+- name: Add export
+  lineinfile:
+    path: /etc/exports
+    regexp: '^{{ folder_sharing }}'
+    line: '{{ folder_sharing }} (rw,sync,no_root_squash,no_subtree_check)'
+
+- name: Start nfs
+  systemd:
+    name: nfs
+    state: restarted
+
+- name: Add auto start nfs server
+  systemd:
+    name: nfs
+    enabled: yes
+    masked: no
+
+
+- name: Report exportfs
+  shell: 'exportfs -a'
