@@ -11,7 +11,7 @@
   lineinfile:
     path: /etc/exports
     regexp: '^{{ folder_sharing }}'
-    line: '{{ folder_sharing }} (rw,sync,no_root_squash,no_subtree_check)'
+    line: '{{ folder_sharing }} *(rw,sync,no_root_squash,no_subtree_check)'
 
 - name: Start nfs
   systemd:

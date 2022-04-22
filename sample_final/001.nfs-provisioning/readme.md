@@ -21,16 +21,25 @@ yum install nfs-utils nfs-utils-lib -y
 chkconfig nfs off
 chkconfig rpcbind off
 ```
-> Ta có thể cài theo ansible đã có sẵn cũng đc. Chỉ cần sửa lại inventory_host.yml là xogn.
+> Ta có thể cài theo ansible đã có sẵn cũng đc. Chỉ cần sửa lại inventory_host.yml là xong.
+> ansible-playbook -i inventory_nfs.yml nfs.yml
 
 **B3: Helm install**
 ```
 helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
 helm pull nfs-subdir-external-provisioner/nfs-subdir-external-provisioner
-helm template nfs-subdir-external-provisioner . --set nfs.server=192.168.88.88 \
-  --set nfs.path=/data/nfs-k8s/ \
-  --set storageClass.name=nfs-provisioner \
+kubectl create ns nfs-provisioner
+kubectl config set-context --current --namespace=nfs-provisioner
+helm template nfs-provisioner-retain . --set nfs.server=192.168.88.12 \
+  --set nfs.path=/data/retain/ \
+  --set storageClass.name=nfs-provisioner-retain \
   --set storageClass.onDelete=retain \
+  --set storageClass.accessModes=ReadWriteMany
+  
+helm template nfs-provisioner-delete . --set nfs.server=192.168.88.12 \
+  --set nfs.path=/data/delete/ \
+  --set storageClass.name=nfs-provisioner-delete \
+  --set storageClass.onDelete=delete \
   --set storageClass.accessModes=ReadWriteMany
 ```
 
@@ -43,7 +52,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: nfs-provisioner
+  storageClassName: nfs-provisioner-retain
   resources:
     requests:
       storage: 2Gi

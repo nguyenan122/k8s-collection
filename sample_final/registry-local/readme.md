@@ -21,6 +21,19 @@ echo 192.168.88.12 registry.tuanda.vn >> /etc/hosts
 
 **Bước 3: Tạo deployment và service NodePort** 
 ```
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: registry-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: nfs-provisioner-retain
+  resources:
+    requests:
+      storage: 10Gi
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -46,10 +59,8 @@ spec:
         configMap:
           name: registry-basic-auth
       - name: registry-vol
-        hostPath:
-          path: /opt/registry
-          type: Directory
-
+        persistentVolumeClaim:
+          claimName: registry-pvc
       containers:
         - image: registry:2
           name: private-repository-k8s
