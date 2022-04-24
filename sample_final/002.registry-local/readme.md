@@ -25,6 +25,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: registry-pvc
+  namespace: registry   
 spec:
   accessModes:
     - ReadWriteMany
@@ -102,6 +103,9 @@ spec:
   selector:
     app: private-repository-k8s
   type: NodePort
+  
+  
+# kubectl -n registry apply -f deployment.yaml 
 ```
 **Bước 4: Add Trust CA Self certificate trên tất cả các node (all node)** 
 ```
