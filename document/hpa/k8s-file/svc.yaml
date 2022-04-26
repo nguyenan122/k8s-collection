@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: svc-nginx-hpa
+  name: svc-nginx-hpa
+spec:
+  ports:
+  - name: 8888-8888
+    nodePort: 31101
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: svc-tomcat-hpa
+  type: NodePort
+status:
+  loadBalancer: {}

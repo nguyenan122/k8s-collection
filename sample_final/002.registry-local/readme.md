@@ -4,19 +4,19 @@ echo 192.168.88.12 registry.tuanda.vn >> /etc/hosts
 ```
 **Bước 2: Import basic-auth và ssl vào configmap** 
 ```
-# mkdir /opt/certs /opt/registry
-# cd /opt/certs
-# openssl req -x509 -out ca.crt -keyout ca.key -days 1825 \
+mkdir /opt/certs /opt/registry
+cd /opt/certs
+openssl req -x509 -out ca.crt -keyout ca.key -days 1825 \
   -newkey rsa:2048 -nodes -sha256 \
   -subj '/CN=registry.tuanda.vn' -extensions EXT -config <( \
    printf "[dn]\nCN=registry.tuanda.vn\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:registry.tuanda.vn\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
 
-# cd /opt/certs/
-# kubectl create namespace registry
-# kubectl -n registry create configmap registry-cert --from-file=ca.crt --from-file=ca.key
-# yum install httpd-tools -y ; htpasswd -Bbn tuanda 123 > htpasswd
-# kubectl -n registry create configmap registry-basic-auth --from-file=htpasswd
-# kubectl -n registry get configmaps 
+cd /opt/certs/
+kubectl create namespace registry
+kubectl -n registry create configmap registry-cert --from-file=ca.crt --from-file=ca.key
+sudo yum install httpd-tools -y ; htpasswd -Bbn tuanda 123 > htpasswd
+kubectl -n registry create configmap registry-basic-auth --from-file=htpasswd
+kubectl -n registry get configmaps 
 ```
 
 **Bước 3: Tạo deployment và service NodePort** 

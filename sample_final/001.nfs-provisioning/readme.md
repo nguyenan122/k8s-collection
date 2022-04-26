@@ -29,15 +29,15 @@ chkconfig rpcbind off
 helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
 helm pull nfs-subdir-external-provisioner/nfs-subdir-external-provisioner
 kubectl create ns nfs-provisioner
-helm template nfs-provisioner-retain . --set nfs.server=192.168.88.12 \
-  --set nfs.path=/data/retain/ \
+helm install nfs-provisioner-retain . --set nfs.server=192.168.88.12 \
+  --set nfs.path=/data/retain \
   --set storageClass.name=nfs-provisioner-retain \
   --set storageClass.onDelete=retain \
   --set storageClass.accessModes=ReadWriteMany \
   --namespace=nfs-provisioner
   
-helm template nfs-provisioner-delete . --set nfs.server=192.168.88.12 \
-  --set nfs.path=/data/delete/ \
+helm install nfs-provisioner-delete . --set nfs.server=192.168.88.12 \
+  --set nfs.path=/data/delete \
   --set storageClass.name=nfs-provisioner-delete \
   --set storageClass.onDelete=delete \
   --set storageClass.accessModes=ReadWriteMany \
