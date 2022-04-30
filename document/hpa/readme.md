@@ -1,9 +1,9 @@
 
 # Create Deployment:
-> k create deployment nginx-hpa --image=nginx:alpine --replicas=2 --port=8888 --dry-run=client -o yaml > deployment.yaml
+> k create deployment nginx-hpa --image=nginx:alpine --replicas=2 --port=80 --dry-run=client -o yaml > deployment.yaml
 
 # Create Services
-> k create service nodeport svc-tomcat-hpa --tcp=8888:8888 --node-port=31101 --dry-run=client -o yaml
+> k expose deployment nginx-hpa --name=nginx-svc --port=80 --target-port=80 --type=NodePort --dry-run=client -o yaml > svc.yaml
 edit yaml file add limit and request CPU
 ```
        resources: 
@@ -14,9 +14,13 @@ edit yaml file add limit and request CPU
 ```
 
 # Create HPA
-> k autoscale deployment tomcat-hpa --max=10 --min=2 --cpu-percent=5 --dry-run=client -o yaml > hpa.yaml
+> k autoscale deployment nginx-hpa --min=2 --max=10 --cpu-percent=10 --dry-run=client -o yaml > hpa.yaml
 
 
 
 Stress test:
+```
+sudo yum install httpd-tools
+ab -k -c 200 -n 2000000 http://localhost:$(k get svc | grep nginx | awk '{print $5}' | awk -F ':' '{print $2}' | awk -F '/' '{print $1}')/
+```
 
