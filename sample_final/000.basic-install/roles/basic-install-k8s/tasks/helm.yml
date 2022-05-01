@@ -1,0 +1,20 @@
+---
+- name: create folder setup
+  file:
+    path: /setup
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'  
+
+- name: Download helm install file
+  get_url:
+    url: https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+    dest: /setup/get-helm-3.sh
+    mode: '0750'
+
+- name: Install helm
+  shell: |
+    PATH=$PATH:/usr/local/bin/
+    /setup/get-helm-3.sh
+

@@ -1,2 +1,3 @@
 ---
 # defaults file for roles/basic-install-k8s
+helm_install: true
