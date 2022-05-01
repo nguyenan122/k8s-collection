@@ -1,5 +1,0 @@
-- name: Debian install package nfs-common
-  apt:
-    name:
-      - nfs-common
-    state: present

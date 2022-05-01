@@ -10,7 +10,9 @@
 - name: Config nfs server
   include: nfs-server.yml
   when: nfs_type == 'server'
+  tags: nfs-server
 
 - name: Config nfs client
   include: nfs-client.yml
   when: nfs_type == 'client'
+  tags: nfs-client

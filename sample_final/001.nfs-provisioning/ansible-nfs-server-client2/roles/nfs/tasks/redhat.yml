@@ -1,5 +1,0 @@
-- name: RedHat install nfs-utils
-  yum:
-    name:
-      - nfs-utils
-    state: present

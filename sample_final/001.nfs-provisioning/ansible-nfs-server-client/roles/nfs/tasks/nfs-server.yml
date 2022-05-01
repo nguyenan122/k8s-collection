@@ -1,17 +1,19 @@
 ---
 - name: Create folder Sharing
   file:
-    path: '{{ folder_sharing }}'
+    path: '{{ item }}'
     state: directory
     mode: '{{ folder_sharing_permission }}'
     owner: root
     group: root
+  loop: '{{ folder_sharing }}'
 
 - name: Add export
   lineinfile:
     path: /etc/exports
-    regexp: '^{{ folder_sharing }}'
-    line: '{{ folder_sharing }} *(rw,sync,no_root_squash,no_subtree_check)'
+    regexp: '^{{ item }}'
+    line: '{{ item }} *(rw,sync,no_root_squash,no_subtree_check)'
+  loop: '{{ folder_sharing }}'
 
 - name: Start nfs
   systemd:

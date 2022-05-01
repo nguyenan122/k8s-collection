@@ -5,15 +5,17 @@
 
 - name: Create folder mounted
   file:
-    path: '{{ folder_mounted }}'
+    path: '{{ item.mounted }}'
     state: directory
     mode: '{{ folder_mounted_permission }}'
     owner: root
     group: root
+  loop: '{{ folder_mounted }}'
 
 - name: Mount NFS
   mount:
-    src: '{{ nfs_server_ip }}:{{ folder_sharing }}'
-    path: '{{ folder_mounted }}'
+    src: '{{ nfs_server_ip }}:{{ item.sharing }}'
+    path: '{{ item.mounted }}'
     fstype: nfs
     state: mounted
+  loop: '{{ folder_mounted }}'
