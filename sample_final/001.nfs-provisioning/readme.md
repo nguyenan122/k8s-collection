@@ -36,14 +36,14 @@ helm install nfs-provisioner-retain . --set nfs.server=192.168.88.12 \
   --set storageClass.name=nfs-provisioner-retain \
   --set storageClass.onDelete=retain \
   --set storageClass.accessModes=ReadWriteMany \
-  --namespace=nfs-provisioner
+  --namespace=nfs-provisioner --create-namespace
   
 helm install nfs-provisioner-delete . --set nfs.server=192.168.88.12 \
   --set nfs.path=/data/delete \
   --set storageClass.name=nfs-provisioner-delete \
   --set storageClass.onDelete=delete \
   --set storageClass.accessModes=ReadWriteMany \
-  --namespace=nfs-provisioner
+  --namespace=nfs-provisioner --create-namespace
 ```
 
 **B4: Tạo PVC và Pod theo Storage đã thêm**
