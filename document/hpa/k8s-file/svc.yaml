@@ -3,17 +3,15 @@ kind: Service
 metadata:
   creationTimestamp: null
   labels:
-    app: svc-nginx-hpa
-  name: svc-nginx-hpa
+    app: nginx-hpa
+  name: nginx-svc
 spec:
   ports:
-  - name: 8888-8888
-    nodePort: 31101
-    port: 80
+  - port: 80
     protocol: TCP
     targetPort: 80
   selector:
-    app: svc-tomcat-hpa
+    app: nginx-hpa
   type: NodePort
 status:
   loadBalancer: {}

@@ -2,15 +2,15 @@ apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   creationTimestamp: null
-  name: tomcat-hpa
+  name: nginx-hpa
 spec:
   maxReplicas: 10
   minReplicas: 2
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: tomcat-hpa
-  targetCPUUtilizationPercentage: 5
+    name: nginx-hpa
+  targetCPUUtilizationPercentage: 10
 status:
   currentReplicas: 0
   desiredReplicas: 0
