@@ -4,4 +4,11 @@
   include: helm.yml
   become: true
   when: helm_install
+  tags: helm
 
+
+- name: Kubecolor install
+  include: kubecolor.yml
+  become: true
+  when: kubecolor_install
+  tags: kubecolor
