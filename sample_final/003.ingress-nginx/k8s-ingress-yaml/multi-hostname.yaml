@@ -1,0 +1,8 @@
+spec:
+  rules:
+  - host: ["foobar.com", "api.foobar.com", "admin.foobar.com", "status.foobar.com"]
+    http:
+      paths:
+      - backend:
+          serviceName: foobar
+          servicePort: 80
