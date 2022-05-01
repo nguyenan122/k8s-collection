@@ -1,11 +1,12 @@
 **Bước 1: Chỉ định hosts trên các worker_node và master_node:**  
 ```
-echo 192.168.88.12 registry.tuanda.vn >> /etc/hosts
+sudo echo 192.168.88.12 registry.tuanda.vn >> /etc/hosts
 ```
 **Bước 2: Import basic-auth và ssl vào configmap** 
 ```
 mkdir /opt/certs /opt/registry
-cd /opt/certs
+chown -R tuanda.tuanda /opt/certs /opt/registry
+su - tuanda ; cd /opt/certs
 openssl req -x509 -out ca.crt -keyout ca.key -days 1825 \
   -newkey rsa:2048 -nodes -sha256 \
   -subj '/CN=registry.tuanda.vn' -extensions EXT -config <( \
@@ -13,9 +14,10 @@ openssl req -x509 -out ca.crt -keyout ca.key -days 1825 \
 
 cd /opt/certs/
 kubectl create namespace registry
-kubectl -n registry create configmap registry-cert --from-file=ca.crt --from-file=ca.key
-sudo yum install httpd-tools -y ; htpasswd -Bbn tuanda 123 > htpasswd
-kubectl -n registry create configmap registry-basic-auth --from-file=htpasswd
+kubectl -n registry create secret tls registry-cert --key=ca.key --cert=ca.crt
+sudo yum install httpd-tools -y
+htpasswd -Bbn tuanda 123 > htpasswd
+kubectl -n registry create secret generic registry-basic-auth --from-file=htpasswd
 kubectl -n registry get configmaps 
 ```
 
@@ -54,11 +56,11 @@ spec:
     spec:
       volumes:
       - name: certs-vol
-        configMap:
-          name: registry-cert
+        secret:
+          secretName: registry-cert
       - name: auth-vol
-        configMap:
-          name: registry-basic-auth
+        secret:
+          secretName: registry-basic-auth
       - name: registry-vol
         persistentVolumeClaim:
           claimName: registry-pvc
@@ -74,9 +76,9 @@ spec:
           - name: REGISTRY_AUTH_HTPASSWD_REALM
             value: Registry Realm
           - name: REGISTRY_HTTP_TLS_CERTIFICATE
-            value: "/certs/ca.crt"
+            value: "/certs/tls.crt"
           - name: REGISTRY_HTTP_TLS_KEY
-            value: "/certs/ca.key"
+            value: "/certs/tls.key"
           ports:
             - containerPort: 5000
           volumeMounts:
@@ -105,20 +107,33 @@ spec:
   type: NodePort
   
   
-# kubectl -n registry apply -f deployment.yaml 
+# kubectl apply -f pvc.yaml
+# kubectl apply -f deployment.yaml
+# kubectl apply -f svc.yaml
+
+Kiểm tra gọi registry:
+# curl -v -k -u 'tuanda:123' https://localhost:31320/v2/_catalog
+Kết quả json: {"repositories":[]}
 ```
 **Bước 4: Add Trust CA Self certificate trên tất cả các node (all node)** 
 ```
 sudo cp -rp /opt/certs/ca.crt  /etc/pki/ca-trust/source/anchors/
 sudo update-ca-trust
 sudo service docker restart
+
+scp -r /opt/certs root@${WORKER_IP}:/opt/
+ssh root@${WORKER_IP}
+sudo cp -rp /opt/certs/ca.crt  /etc/pki/ca-trust/source/anchors/
+sudo update-ca-trust
+cat /etc/pki/ca-trust/extracted/openssl/ca-bundle.trust.crt
+sudo service docker restart
 ```
 **Bước 5: Đẩy cert vào tất cả các node docker, để permit self-certificate gọi pull. (all node)** 
 ```
-mkdir -p /etc/docker/certs.d/registry.tuanda.vn:31320
-cp -rp /opt/certs/ca.crt /etc/docker/certs.d/registry.tuanda.vn\:31320/
+sudo mkdir -p /etc/docker/certs.d/registry.tuanda.vn:31320
+sudo cp -rp /opt/certs/ca.crt /etc/docker/certs.d/registry.tuanda.vn\:31320/
 ```
-**Bước 6: docker login đẩy config registry client sang các node: (all node)** 
+**Bước 6: docker login đẩy config registry client sang các worker node: (worker node)** 
 ```
 # curl -v --user tuanda:123 https://registry.tuanda.vn:31320/v2/
 # docker login registry.tuanda.vn:31320 -u tuanda -p 123
