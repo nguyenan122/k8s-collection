@@ -17,11 +17,11 @@ spec:
     spec:
       volumes:
       - name: certs-vol
-        configMap:
-          name: registry-cert
+        secret:
+          secretName: registry-cert
       - name: auth-vol
-        configMap:
-          name: registry-basic-auth
+        secret:
+          secretName: registry-basic-auth
       - name: registry-vol
         persistentVolumeClaim:
           claimName: registry-pvc
@@ -37,9 +37,9 @@ spec:
           - name: REGISTRY_AUTH_HTPASSWD_REALM
             value: Registry Realm
           - name: REGISTRY_HTTP_TLS_CERTIFICATE
-            value: "/certs/ca.crt"
+            value: "/certs/tls.crt"
           - name: REGISTRY_HTTP_TLS_KEY
-            value: "/certs/ca.key"
+            value: "/certs/tls.key"
           ports:
             - containerPort: 5000
           volumeMounts:
