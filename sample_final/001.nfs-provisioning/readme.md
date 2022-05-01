@@ -2,7 +2,10 @@
 
 [NFS-server]---[Master]----[Worker]----[Worker]
 
-**B1: Cài Nfs server:**
+**B1.1: Cài Nfs server:**
+> Ta có thể cài theo ansible đã có sẵn cũng đc. Chỉ cần sửa lại inventory_host.yml là xong. Thay cho cả 2 bước 1.1 và 1.2
+> ansible-playbook -i inventory_nfs.yml nfs.yml
+
 ```
 yum install nfs-utils nfs-utils-lib -y
 chkconfig rpcbind on
@@ -15,16 +18,15 @@ exportfs -a
 showmount -e 192.168.88.88
 ```
 
-**B2: Cài nfs client trên tất cả worker node, nếu không sẽ lỗi không mout đc vào pod.**
+**B1.2: Cài nfs client trên tất cả worker node, nếu không sẽ lỗi không mout đc vào pod.**
 ```
 yum install nfs-utils nfs-utils-lib -y
 chkconfig nfs off
 chkconfig rpcbind off
 ```
-> Ta có thể cài theo ansible đã có sẵn cũng đc. Chỉ cần sửa lại inventory_host.yml là xong.
-> ansible-playbook -i inventory_nfs.yml nfs.yml
 
-**B3: Helm install**
+
+**B2: Helm install**
 ```
 helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
 helm pull nfs-subdir-external-provisioner/nfs-subdir-external-provisioner

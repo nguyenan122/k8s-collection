@@ -1,0 +1,14 @@
+---
+- name: Install NFS Server
+  hosts: nfs_server
+
+  roles:
+    - role: nfs
+      become: true  
+
+- name: Install NFS Client
+  hosts: nfs_client
+  
+  roles:
+    - role: nfs
+      become: true 

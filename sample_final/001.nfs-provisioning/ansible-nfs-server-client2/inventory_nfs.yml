@@ -1,0 +1,6 @@
+[nfs_server]
+pc1 ansible_ssh_host=192.168.88.12
+
+[nfs_client]
+pc2 ansible_ssh_host=192.168.88.13
+pc3 ansible_ssh_host=192.168.88.14

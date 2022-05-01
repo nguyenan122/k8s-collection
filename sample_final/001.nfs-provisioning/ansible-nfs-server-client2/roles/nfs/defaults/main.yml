@@ -1,0 +1,13 @@
+---
+#Config for NFS server
+folder_sharing: 
+  - /data/delete
+  - /data/retain
+folder_sharing_permission: '0777'
+
+
+#Config for NFS client
+folder_mounted:
+  - { sharing: '/data/delete', mounted: '/data/delete' }
+  - { sharing: '/data/retain', mounted: '/data/retain' }
+folder_mounted_permission: '0777'
