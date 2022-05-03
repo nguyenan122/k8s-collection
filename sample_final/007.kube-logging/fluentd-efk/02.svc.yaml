@@ -1,0 +1,35 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: elasticsearch
+  namespace: kube-logging
+  labels:
+    app: elasticsearch
+spec:
+  selector:
+    app: elasticsearch
+  clusterIP: None
+  ports:
+    - port: 9200
+      name: rest
+    - port: 9300
+      name: inter-node
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: elasticsearch-svc
+  name: elasticsearch-svc
+  namespace: kube-logging
+spec:
+  ports:
+  - port: 9200
+    protocol: TCP
+    targetPort: 9200
+    nodePort: 30092
+  selector:
+    app: elasticsearch
+  type: NodePort
