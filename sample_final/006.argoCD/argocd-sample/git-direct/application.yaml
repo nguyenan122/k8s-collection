@@ -8,7 +8,7 @@ spec:
    source:
       repoURL: https://github.com/nguyenan122/k8s-collection.git
       targetRevision: HEAD
-      path: sample_final/006.argoCD/argocd-sample/git/demo
+      path: sample_final/006.argoCD/argocd-sample/git-direct/demo
    destination:
       server: https://kubernetes.default.svc
       namespace: myapp
