@@ -107,8 +107,9 @@ helm upgrade first-chart .
 # Phần 3: Link variable vào Chart.yaml và variable.yaml
 
 3.1 Chart.yaml
-```
+
 Sửa file configmap ở phần 1:
+```
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -121,18 +122,18 @@ helm upgrade first-chart .
 [tuanda@master-node first-chart]$ kubectl get configmaps 
 NAME                   DATA   AGE
 fortune-config-0.1.0   2      68s
-
+```
 3.2 Values.yaml
-
+```
 Sửa file:
 tuanda:
   ahihi: "xin chao"
 
 replicaCount: 1
 Ta có {{.Values.tuanda.ahihi}}
-
+```
 3.3 Dynamic if/else in helm
-
+```
 tuanda@master-node first-chart]$ cat templates/secret.yaml 
 apiVersion: v1
 kind: Secret
@@ -147,13 +148,14 @@ data:
   USER_NAME: YWRtaW4=
   PASSWORD: MWYyZDFlMmU2N2Rm
   {{end}}
-
+```
 Thêm env: "Staging" trong file values.yaml và test
+```
 helm template first-chart .
 helm upgrade first-chart .
 ```
 
-# Phần 3: Helm push local registry
+# Phần 4: Helm push local registry
 ```
 # export HELM_EXPERIMENTAL_OCI=1
 # helm registry login -u tuanda registry.tuan.name.vn:31320
