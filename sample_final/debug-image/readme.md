@@ -37,3 +37,10 @@ and build them:
 Nguồn: 
 https://cloudogu.com/en/blog/k8s-app-ops-part-2 , https://github.com/nicolaka/netshoot
 https://pauldally.medium.com/debugging-networkpolicy-part-3-83658d26747e 
+
+
+
+
+# Debug with Mizu
+[https://bmiguel-teixeira.medium.com/mizu-kubernetes-traffic-viewer-b9c39a6a3aeb](https://getmizu.io/docs/)
+[https://getmizu.io/docs/](https://getmizu.io/docs/)
