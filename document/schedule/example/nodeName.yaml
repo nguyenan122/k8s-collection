@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx-schedule
+  name: nginx-schedule
+spec:
+  containers:
+  - image: nginx:alpine
+    name: nginx-schedule
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+  nodeName: worker-node2

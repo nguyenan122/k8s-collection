@@ -181,11 +181,67 @@ spec:
           name: nginx
 ```
 
-## B. Pod affinity
-Mục đích: deploy backend gần db, frontend xa db...(pod vs pod)
+## B. Pod affinity và Pod anti-affifity
+B1. Pod affinity
+Mục đích: deploy backend gần db, frontend xa backend...(pod vs pod)
 NGuồn: [k8s pod affifity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity)
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: kubernetes.io/hostname
+              labelSelector:
+                  matchLabels:
+                    app: database
+      containers:
+        - name: main
+          image: alpine
+          command: ["/bin/sleep", "999999"]
+```
 
-
+B2. Pod anti-affifity
+Mục đích: chặn pod frontend chuẩn bị deploy tránh xa backend
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: kubernetes.io/hostname
+              labelSelector:
+                  matchLabels:
+                    app: backend
+      containers:
+        - name: main
+          image: alpine
+          command: ["/bin/sleep", "999999"]
+```
 
 
 ----------------------

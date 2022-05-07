@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webconsole
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: webconsole
+  template:
+    metadata:
+      labels:
+        app: webconsole
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: disktype
+                operator: In
+                values:
+                - ssd
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 50
+              preference:
+                matchExpressions:
+                - key: disktype
+                  operator: In
+                  values:
+                    - "nvme_class3"
+            - weight: 30
+              preference:
+                matchExpressions:
+                - key: disktype
+                  operator: In
+                  values:
+                    - "nvme_class1"
+            - weight: 20
+              preference:
+                matchExpressions:
+                - key: disktype
+                  operator: In
+                  values:
+                    - "nvme_class2"
+      containers:
+        - image: nginx:alpine
+          name: nginx
