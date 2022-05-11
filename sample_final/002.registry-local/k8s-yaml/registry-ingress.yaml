@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: registry-ingress
+  namespace: registry
+spec:
+  ingressClassName: nginx # newer Nginx-Ingress versions NEED THIS
+  tls:
+  - hosts:
+      - registry.tuan.name.vn
+    secretName: ssl-tuan.name.vn
+  rules:
+  - host: registry.tuan.name.vn
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: private-repository-k8s
+            port:
+              number: 5000

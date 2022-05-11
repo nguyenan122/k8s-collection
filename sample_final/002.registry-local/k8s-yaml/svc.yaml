@@ -8,9 +8,8 @@ metadata:
 spec:
   ports:
   - port: 5000
-    nodePort: 31320
     protocol: TCP
     targetPort: 5000
   selector:
     app: private-repository-k8s
-  type: NodePort
+  type: ClusterIP

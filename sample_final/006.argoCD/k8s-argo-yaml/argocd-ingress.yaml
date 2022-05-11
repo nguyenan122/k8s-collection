@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-argocd
+  namespace: argocd
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: argocd.tuan.name.vn
+    http:
+      paths:
+      - backend:
+          service:
+            name: argocd-server-nodeport
+            port:
+              number: 31322
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - argocd.tuan.name.vn
+    secretName: ssl-tuan.name.vn
