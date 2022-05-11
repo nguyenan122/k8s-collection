@@ -651,7 +651,7 @@ defaultBackend:
 service:
   ## @param service.type Kubernetes Service type for Controller
   ##
-  type: LoadBalancer
+  type: NodePort
   ## @param service.ports [object] Service ports
   ##
   ports:
@@ -666,8 +666,8 @@ service:
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
   ##
   nodePorts:
-    http: ""
-    https: ""
+    http: "30080"
+    https: "30443"
     tcp: {}
     udp: {}
   ## @param service.annotations Annotations for controller service
