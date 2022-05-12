@@ -1,13 +1,16 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: registry-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  name: ingress-registry
   namespace: registry
 spec:
-  ingressClassName: nginx # newer Nginx-Ingress versions NEED THIS
+  ingressClassName: nginx
   tls:
   - hosts:
-      - registry.tuan.name.vn
+    - registry.tuan.name.vn
     secretName: ssl-tuan.name.vn
   rules:
   - host: registry.tuan.name.vn

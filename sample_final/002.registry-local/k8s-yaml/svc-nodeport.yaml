@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: private-repository-k8s-nodeport
+  name: private-repository-k8s-nodeport
+  namespace: registry  
+spec:
+  ports:
+  - port: 5000
+    protocol: TCP
+    targetPort: 5000
+    nodePort: 30050
+  selector:
+    app: private-repository-k8s
+  type: NodePort
