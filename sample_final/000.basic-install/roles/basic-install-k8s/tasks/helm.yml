@@ -19,11 +19,20 @@
     /setup/get-helm-3.sh
 
 
-- name: HELM install bash completion
+#For Centos
+- name: HELM install bash completion RedHat
   yum:
     name: bash-completion
     state: present
+  when: ansible_os_family == "RedHat"
 
+- name: HELM install bash completion Debian
+  apt:
+    name: bash-completion
+    state: present
+  when: ansible_os_family == "Debian"
+
+  
 - name: HELM Import bash completion 
   shell: |
     PATH=$PATH:/usr/local/bin/
