@@ -1,6 +1,6 @@
 Ta sẽ chia làm 2 phần. Phần 1 là có certificate xịn, phần 2 là chỉ có self certitifcate.
 
-#PHẦN 1: Tạo registry có cert xịn
+# PHẦN 1: Tạo registry có cert xịn
 
 **Bước 1: Chỉ định hosts trên các worker_node và master_node, nếu có DNS trỏ thì không cần bước này**  
 ```
