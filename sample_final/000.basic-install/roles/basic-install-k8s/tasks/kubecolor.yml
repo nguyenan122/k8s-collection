@@ -18,7 +18,12 @@
     src: /setup/kubecolor_0.0.20_Linux_x86_64.tar.gz
     dest: /setup/kubecolor/
 
+- name: KUBECOLOR Change permission running
+  file:
+    path: /setup/kubecolor/kubecolor
+    owner: root
+    group: root
+    mode: '0755'
+
 - name: KUBECOLOR Copy file to /usr/bin/
-  shell: |
-    chmod 755 /setup/kubecolor/kubecolor
-    cp -rp /setup/kubecolor/kubecolor /usr/bin/
+  shell: cp -rp /setup/kubecolor/kubecolor /usr/bin/

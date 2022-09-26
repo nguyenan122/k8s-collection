@@ -1,6 +1,8 @@
 ---
 - name: Install redis
-  hosts: localpc
+  hosts:
+    - localpc
+    - remote
   
   roles:
     - role: basic-install-k8s

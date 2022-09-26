@@ -1,9 +1,7 @@
 ---
 # HELM
-helm_install: true
 
 
 # KUBECOLOR
-kubecolor_install: true
 kubecolor_version: '0.0.20'
 

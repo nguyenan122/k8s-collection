@@ -3,12 +3,12 @@
 - name: helm install
   include: helm.yml
   become: true
-  when: helm_install
+  when: install == "helm"
   tags: helm
 
 
 - name: Kubecolor install
   include: kubecolor.yml
   become: true
-  when: kubecolor_install
+  when: install == "kubecolor"
   tags: kubecolor
