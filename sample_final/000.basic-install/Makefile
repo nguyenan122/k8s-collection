@@ -9,3 +9,5 @@ install_helm:
 	ansible-playbook -i inventory.yml main.yml -e install="helm"
 install_kubecolor:
 	ansible-playbook -i inventory.yml main.yml -e install="kubecolor"
+install_kustomize:
+	ansible-playbook -i inventory.yml main.yml -e install="kustomize"

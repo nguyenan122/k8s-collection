@@ -1,0 +1,46 @@
+---
+- name: KUSTOMIZE create folder setup
+  file:
+    path: /setup
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'  
+
+- name: KUSTOMIZE Download quick install script
+  get_url:
+    url: https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh
+    dest: /setup/install_kustomize.sh
+    mode: '0750'
+- name: KUSTOMIZE remove if exist
+  file:
+    path: /setup/kustomize
+    state: absent
+
+- name: KUSTOMIZE Install form quick script
+  command: bash install_kustomize.sh
+  args:
+    chdir: /setup
+
+- name: KUSTOMIZE Install form quick script
+  shell: |
+    cp -rp /setup/kustomize /usr/bin/kustomize
+
+#For Centos
+- name: KUSTOMIZE install bash completion RedHat
+  yum:
+    name: bash-completion
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: KUSTOMIZE install bash completion Debian
+  apt:
+    name: bash-completion
+    state: present
+  when: ansible_os_family == "Debian"
+
+  
+- name: KUSTOMIZE Import bash completion 
+  shell: |
+    PATH=$PATH:/usr/local/bin/
+    kustomize completion bash > /etc/bash_completion.d/kustomize

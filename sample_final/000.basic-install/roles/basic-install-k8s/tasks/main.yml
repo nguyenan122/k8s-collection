@@ -12,3 +12,10 @@
   become: true
   when: install == "kubecolor"
   tags: kubecolor
+
+
+- name: Kustomize install
+  include: kustomize.yml
+  become: true
+  when: install == "kustomize"
+  tags: kustomize
