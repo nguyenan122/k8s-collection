@@ -4,6 +4,9 @@ First, we need install helm, kubercolor tool
 
 OS Support: Ubuntu + Centos
 ```
-ansible-playbook -i inventory.yml main.yml
+make
+make help
+make install_helm
+make install_kubecolor
 ```
 
