@@ -1,0 +1,8 @@
+resources:
+  - api/
+  - db/
+  - monitoring/
+
+#Baitap 1: Add label
+commonLabels:
+  project: lambda

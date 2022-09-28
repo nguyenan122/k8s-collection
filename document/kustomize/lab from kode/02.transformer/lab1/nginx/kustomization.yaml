@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - nginx-depl.yaml
+  - nginx-service.yaml
+
+commonAnnotations:
+  owner: bob@gmail.com
+
+#Transform all nginx images in the nginx directory to nginx:1.23.
+images:
+  - name: nginx
+    newTag: "1.23"

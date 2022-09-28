@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: keycloak
+  template:
+    metadata:
+      labels:
+        component: keycloak
+    spec:
+      containers:
+        - name: keycloak
+          image: bitnami/keycloak
+          #Them env vao k8s su dung configmapGenerator
+          env:
+            - name: KEYCLOAK_HTTP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: keycloak-config
+                  key: http-port
+            - name: KEYCLOAK_HTTPS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: keycloak-config
+                  key: https-port

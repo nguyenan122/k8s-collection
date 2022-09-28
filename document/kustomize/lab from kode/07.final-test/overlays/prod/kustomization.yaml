@@ -1,0 +1,13 @@
+bases:
+  - ../../base
+
+#Baitap 2: add name suffix
+nameSuffix: -prod
+
+#Baitap 4: change replicas =5 su dung strategic merge
+patches:
+  - api-patch.yaml
+
+#Baitap 7: them compoment
+components:
+  - ../../components/auth

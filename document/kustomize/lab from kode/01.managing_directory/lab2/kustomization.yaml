@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# kubernetes resources to be managed by kustomize
+resources:
+  - db/
+  - message-broker/
+  - nginx/
+#Customizations that need to be made

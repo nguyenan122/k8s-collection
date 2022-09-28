@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+resources:
+  - redis-depl.yaml
+  - redis-service.yaml
+
+#Create a Strategic merge Patch and add value REDIS_CONNECTION
+patches:
+  - api-patch.yaml  

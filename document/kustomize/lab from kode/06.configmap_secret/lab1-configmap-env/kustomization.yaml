@@ -1,0 +1,15 @@
+secretGenerator:
+  - name: db-creds
+    literals:
+      - username=postgres
+      - password=password1
+
+  - name: domain-name
+    literals:
+      - domain=api.kodekloud.com
+
+configMapGenerator:
+  - name: keycloak-config
+    literals:
+      - http-port=80
+      - https-port=443

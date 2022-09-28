@@ -1,0 +1,10 @@
+bases:
+  - ../../base
+
+#Baitap 8: Add config su dung patches and generator
+configMapGenerator:
+  - name: db-config
+    files:
+      - postgresql.conf
+patches:
+  - db-patch.yaml

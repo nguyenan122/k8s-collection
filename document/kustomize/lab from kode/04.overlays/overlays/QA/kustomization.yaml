@@ -1,0 +1,14 @@
+bases:
+  - ../../base
+commonLabels:
+  environment: QA
+
+#Update the api image in the api-deployment to use caddy docker image in the QA environment.
+patches:
+  - target:
+      kind: Deployment
+      name: api-deployment
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/image
+        value: caddy

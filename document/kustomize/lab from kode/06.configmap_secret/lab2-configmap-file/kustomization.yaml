@@ -1,0 +1,7 @@
+resources:
+  - api-depl.yaml
+
+configMapGenerator:
+  - name: nginx-config
+    files:
+      - nginx.conf

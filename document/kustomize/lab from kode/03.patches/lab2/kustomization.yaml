@@ -1,0 +1,8 @@
+resources:
+  - mongo-depl.yaml
+  - api-depl.yaml
+  - mongo-service.yaml
+
+#In api-patch.yaml create a strategic merge patch to remove the memcached container.
+patches:
+  - api-patch.yaml

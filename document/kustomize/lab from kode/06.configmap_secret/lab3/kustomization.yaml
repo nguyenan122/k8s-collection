@@ -1,0 +1,8 @@
+secretGenerator:
+  - name: db-creds
+    literals:
+      - username=postgres
+      - password=IamTheChange
+    options:
+      labels:
+        app-config: my-config

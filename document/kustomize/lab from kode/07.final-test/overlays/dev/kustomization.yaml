@@ -1,0 +1,25 @@
+bases:
+  - ../../base
+
+#Baitap 3: thay image postgres thanh mongo 
+patches:
+  - target:
+      kind: Deployment
+      name: db-deployment
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0
+        value:
+          name: db
+          image: mongo
+
+#Baitap 6: sua password su dung secretGenerator
+secretGenerator:
+  - name: db-secret
+    literals:
+      - password=devpassword
+    behavior: merge
+
+#Baitap 7: them compoment
+components:
+  - ../../components/logging
