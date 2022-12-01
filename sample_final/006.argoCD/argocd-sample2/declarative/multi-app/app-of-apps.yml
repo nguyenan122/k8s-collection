@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: http://165.22.209.118:3000/siddharth/gitops-argocd.git
+    repoURL: https://github.com/nguyenan122/k8s-collection.git
     targetRevision: HEAD
-    path: ./declarative/app-of-apps
+    path: ./sample_final/006.argoCD/argocd-sample2/declarative/app-of-apps
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
