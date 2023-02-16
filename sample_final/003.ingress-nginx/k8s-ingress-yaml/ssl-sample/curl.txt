@@ -1,0 +1,1 @@
+curl -vk --resolve secure-ingress.com:32163:127.0.0.1 https://secure-ingress.com:32163/service2/
