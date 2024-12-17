@@ -1,11 +1,14 @@
 Chủ đề 1: 가족
 
-1. 가족이 몇 명이에요?
+1. 가족이 몇 명이에요? 1. Gia đình bạn có bao nhiêu người?
+
 우리 가족은 네 명이에요. 아빠, 엄마, 여동생, 그리고 저예요.
-1. Gia đình bạn có bao nhiêu người?
 Có năm người trong gia đình tôi. Đó là bố, mẹ, em gái và tôi.
 
-2. 어디에 삽니까?
+   
+
+
+3. 어디에 삽니까?
 우리는 하노이에 살아요. 아파트에서 같이 살고 있어요.
 2. Bạn sống ở đâu?
 Chúng tôi sống ở Hà Nội. Chúng tôi sống cùng nhau trong một căn hộ.
